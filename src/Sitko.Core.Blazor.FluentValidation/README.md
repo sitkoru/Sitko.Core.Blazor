@@ -5,7 +5,7 @@
 ## Установка
 
 ```xml
-<PackageReference Include="Sitko.Core.Blazor.FluentValidation" Version="4.3.0"/>
+<PackageReference Include="Sitko.Core.Blazor.FluentValidation" Version="1.0.0"/> # Брать последнюю версию =)
 ```
 
 ## Использование
