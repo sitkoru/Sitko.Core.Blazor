@@ -1,0 +1,25 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - '*.*.*'
+
+jobs:
+    build:
+        runs-on: self-hosted
+        container: mcr.microsoft.com/dotnet/sdk:5.0
+        steps:
+            -   uses: actions/checkout@v2
+            -   name: Prepare
+                id: prep
+                run: |
+                    VERSION=${GITHUB_REF#refs/tags/}
+                    echo ::set-output name=version::${VERSION}
+            -   name: Create packages
+                run: dotnet pack -c Release /p:Version=${{ steps.prep.outputs.version }} -o $(pwd)/packages
+            -   name: Add nuget source
+                run: dotnet nuget add source ${{ secrets.NUGET_HOST }} -n ${{ secrets.NUGET_HOST }} --store-password-in-clear-text -u ${{ secrets.NUGET_USER }} -p ${{ secrets.NUGET_PASSWORD }} || true
+            -   name: Publish nuget package
+                run: find packages -name *.nupkg -exec dotnet nuget push {} -s ${{ secrets.NUGET_HOST }} -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate \;
+                    

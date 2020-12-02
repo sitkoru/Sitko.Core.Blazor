@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <IsPackable>true</IsPackable>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Authors>George Drak</Authors>
+    <Company>Sitko.Ru</Company>
+    <Product>Sitko.Core.Blazor</Product>
+    <Description>Sitko.Core.Blazor is a set of modules for Sitko.Core based Blazor applications</Description>
+    <Summary>Sitko.Core.Blazor is a set of modules for Sitko.Core based Blazor applications</Summary>
+    <Copyright>Copyright © Sitko.ru 2020</Copyright>
+    <RepositoryUrl>https://github.com/sitkoru/Sitko.Core.Blazor</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.3.0"/>
+    <PackageReference Include="Sitko.Core.App.Web" Version="4.3.0"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="3.1.10"/>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="5.0.0"/>
+  </ItemGroup>
+</Project>

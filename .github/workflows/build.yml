@@ -1,0 +1,23 @@
+name: Build
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+
+jobs:
+    build:
+        runs-on: self-hosted
+        container: ghcr.io/sitkoru/actions-container
+        steps:
+            -   uses: actions/checkout@v2
+            -   uses: actions/setup-dotnet@v1
+                with:
+                    dotnet-version: '3.1.x'            
+            -   uses: actions/setup-dotnet@v1
+                with:
+                    dotnet-version: '5.0.x'
+            -   name: Build
+                run: dotnet build
+            -   name: Create packages
+                run: dotnet pack -c Release

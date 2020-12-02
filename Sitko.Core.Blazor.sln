@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AAF57F52-C265-4078-974E-9DD573B3793D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitko.Core.Blazor.FluentValidation", "src\Sitko.Core.Blazor.FluentValidation\Sitko.Core.Blazor.FluentValidation.csproj", "{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{43B40499-EB5F-4569-BCAF-6D634D177EF4}"
+ProjectSection(SolutionItems) = preProject
+	.github\dependabot.yml = .github\dependabot.yml
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{53630735-5FEE-4FDD-A5EC-23A792137CEE}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\build.yml = .github\workflows\build.yml
+	.github\workflows\release.yml = .github\workflows\release.yml
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Debug|x64.Build.0 = Debug|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Debug|x86.Build.0 = Debug|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Release|x64.ActiveCfg = Release|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Release|x64.Build.0 = Release|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Release|x86.ActiveCfg = Release|Any CPU
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37068ECA-CB10-4DF7-B8B4-2D92CE8625AB} = {AAF57F52-C265-4078-974E-9DD573B3793D}
+		{53630735-5FEE-4FDD-A5EC-23A792137CEE} = {43B40499-EB5F-4569-BCAF-6D634D177EF4}
+	EndGlobalSection
+EndGlobal
