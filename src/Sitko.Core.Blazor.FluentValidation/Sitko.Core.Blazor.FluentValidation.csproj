@@ -15,7 +15,6 @@
     <RepositoryUrl>https://github.com/sitkoru/Sitko.Core.Blazor</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
-    <DebugType>embedded</DebugType>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageIcon>packageIcon.png</PackageIcon>
