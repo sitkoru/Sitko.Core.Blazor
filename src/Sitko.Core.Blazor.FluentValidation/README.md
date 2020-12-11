@@ -19,7 +19,7 @@
 Добавить в `_Imports.razor`:
 
 ```c#
-@using BioEngine.BRC.Admin.Components.Validation
+@using Sitko.Core.Blazor.FluentValidation
 ```
 
 Добавить компонент в форму для включения валидации:
