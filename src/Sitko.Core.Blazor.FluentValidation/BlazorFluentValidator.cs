@@ -12,6 +12,8 @@ namespace Sitko.Core.Blazor.FluentValidation
         [Inject] FluentValidator FluentValidator { get; set; }
 
         [Inject] IServiceProvider ServiceProvider { get; set; }
+        
+        [Inject] BlazorFluentValidationModuleConfig Config { get; set; }
 
         public override async Task SetParametersAsync(ParameterView parameters)
         {
@@ -29,7 +31,7 @@ namespace Sitko.Core.Blazor.FluentValidation
 
         private void EditContextChanged()
         {
-            FluentValidator.InitializeEditContext(CurrentEditContext, ServiceProvider);
+            FluentValidator.InitializeEditContext(Config, CurrentEditContext, ServiceProvider);
         }
     }
 }

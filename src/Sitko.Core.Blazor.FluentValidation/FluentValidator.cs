@@ -13,7 +13,7 @@ namespace Sitko.Core.Blazor.FluentValidation
 {
     public class FluentValidator
     {
-        public void InitializeEditContext(
+        public void InitializeEditContext(BlazorFluentValidationModuleConfig config,
             EditContext editContext,
             IServiceProvider serviceProvider)
         {
@@ -26,17 +26,17 @@ namespace Sitko.Core.Blazor.FluentValidation
             editContext.OnValidationRequested +=
                 (sender, eventArgs) =>
                 {
-                    _ = ValidateModel((EditContext)sender, messages, serviceProvider);
+                    _ = ValidateModel(config, (EditContext)sender, messages, serviceProvider);
                 };
 
             editContext.OnFieldChanged +=
                 (sender, eventArgs) =>
                 {
-                    _ = ValidateField(editContext, messages, eventArgs.FieldIdentifier, serviceProvider);
+                    _ = ValidateField(config, editContext, messages, eventArgs.FieldIdentifier, serviceProvider);
                 };
         }
 
-        private async Task ValidateModel(
+        private async Task ValidateModel(BlazorFluentValidationModuleConfig config,
             EditContext editContext,
             ValidationMessageStore messages,
             IServiceProvider serviceProvider)
@@ -52,7 +52,7 @@ namespace Sitko.Core.Blazor.FluentValidation
 
 
             var validationResults = new Dictionary<object, List<ValidationResult>>();
-            await ValidateModelInternal(serviceProvider, editContext.Model, validationResults);
+            await ValidateModelInternal(config, serviceProvider, editContext.Model, validationResults);
 
             messages.Clear();
             editContext.NotifyValidationStateChanged();
@@ -69,7 +69,8 @@ namespace Sitko.Core.Blazor.FluentValidation
             editContext.NotifyValidationStateChanged();
         }
 
-        private static async Task ValidateModelInternal(IServiceProvider serviceProvider, object model,
+        private async Task ValidateModelInternal(BlazorFluentValidationModuleConfig config,
+            IServiceProvider serviceProvider, object model,
             Dictionary<object, List<ValidationResult>> validationResults)
         {
             IEnumerable<IValidator> validators = GetValidatorsForObject(model, serviceProvider);
@@ -84,31 +85,45 @@ namespace Sitko.Core.Blazor.FluentValidation
 
             foreach (var property in model.GetType().GetProperties())
             {
-                if (property.PropertyType.IsClass && !property.PropertyType.IsAbstract)
+                if (property.PropertyType.IsClass && !property.PropertyType.IsAbstract &&
+                    !property.PropertyType.IsPrimitive)
                 {
-                    if (typeof(IEnumerable<>).IsAssignableFrom(property.PropertyType))
+                    if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType))
                     {
                         if (property.GetValue(model) is IEnumerable propertyValue)
                         {
                             foreach (var item in propertyValue)
                             {
-                                await ValidateModelInternal(serviceProvider, item, validationResults);
+                                if (item != null && CanValidateType(item.GetType(), config))
+                                {
+                                    await ValidateModelInternal(config, serviceProvider, item, validationResults);
+                                }
                             }
                         }
                     }
-                    else
+                    else if (CanValidateType(property.PropertyType, config))
                     {
                         var propertyValue = property.GetValue(model);
                         if (propertyValue != null)
                         {
-                            await ValidateModelInternal(serviceProvider, propertyValue, validationResults);
+                            await ValidateModelInternal(config, serviceProvider, propertyValue, validationResults);
                         }
                     }
                 }
             }
         }
 
-        private async Task ValidateField(
+        private bool CanValidateType(Type type, BlazorFluentValidationModuleConfig config)
+        {
+            if (config.Namespaces.Any(n => type.Namespace?.StartsWith(n) == true))
+            {
+                return true;
+            }
+
+            return type.Namespace?.StartsWith("System") != true;
+        }
+
+        private async Task ValidateField(BlazorFluentValidationModuleConfig config,
             EditContext editContext,
             ValidationMessageStore messages,
             FieldIdentifier fieldIdentifier,
@@ -123,14 +138,18 @@ namespace Sitko.Core.Blazor.FluentValidation
             if (editContext.Model == null)
                 throw new NullReferenceException($"{nameof(editContext)}.{nameof(editContext.Model)}");
 
-            var propertiesToValidate = new string[] {fieldIdentifier.FieldName};
+            if (!CanValidateType(fieldIdentifier.Model.GetType(), config))
+            {
+                return;
+            }
+
+            var propertiesToValidate = new[] {fieldIdentifier.FieldName};
             var fluentValidationContext =
                 new ValidationContext<object>(
-                    instanceToValidate: fieldIdentifier.Model,
-                    propertyChain: new PropertyChain(),
-                    validatorSelector: new MemberNameValidatorSelector(propertiesToValidate)
+                    fieldIdentifier.Model,
+                    new PropertyChain(),
+                    new MemberNameValidatorSelector(propertiesToValidate)
                 );
-
 
             IEnumerable<IValidator> validators = GetValidatorsForObject(fieldIdentifier.Model, serviceProvider);
             var validationResults = new List<ValidationResult>();
@@ -156,12 +175,24 @@ namespace Sitko.Core.Blazor.FluentValidation
             editContext.NotifyValidationStateChanged();
         }
 
-        private static IEnumerable<IValidator> GetValidatorsForObject(
+        private IValidator[]? _validators;
+
+        private IEnumerable<IValidator> GetValidatorsForObject(
             object model,
             IServiceProvider serviceProvider)
         {
-            Type interfaceValidatorType = typeof(IValidator<>).MakeGenericType(model.GetType());
-            return serviceProvider.GetServices(interfaceValidatorType).Cast<IValidator>();
+            _validators ??= serviceProvider.GetServices<IValidator>().ToArray();
+
+            var validators = new List<IValidator>();
+            foreach (var validator in _validators)
+            {
+                if (validator.CanValidateInstancesOfType(model.GetType()))
+                {
+                    validators.Add(validator);
+                }
+            }
+
+            return validators;
         }
     }
 }
