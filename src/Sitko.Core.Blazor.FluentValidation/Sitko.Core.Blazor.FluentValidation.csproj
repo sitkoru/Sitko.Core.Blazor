@@ -5,6 +5,7 @@
     <IsPackable>true</IsPackable>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>George Drak</Authors>
     <Company>Sitko.Ru</Company>
     <Product>Sitko.Core.Blazor</Product>
@@ -18,6 +19,8 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+    <None Include="..\..\packageIcon.png" Pack="true" PackagePath="\" />
     <PackageReference Include="FluentValidation" Version="9.3.0"/>
     <PackageReference Include="Sitko.Core.App.Web" Version="4.4.0"/>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
