@@ -22,7 +22,7 @@
   <ItemGroup>
     <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
     <None Include="..\..\packageIcon.png" Pack="true" PackagePath="\" />
-    <PackageReference Include="FluentValidation" Version="9.3.0"/>
+    <PackageReference Include="FluentValidation" Version="10.0.0"/>
     <PackageReference Include="Sitko.Core.App.Web" Version="4.4.0"/>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
